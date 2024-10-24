@@ -24,6 +24,7 @@ Contacts
 
 The source code is maintained by `Alessandro Colombo (ETH Zurich) <https://nux.ethz.ch/people.html>`_. Please contact alcolombo@phys.ethz.ch for any question, issue or suggestion!
     
+
 Citing
 ^^^^^^^
 
