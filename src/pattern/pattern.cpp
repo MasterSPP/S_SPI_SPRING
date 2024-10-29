@@ -506,7 +506,7 @@ std::vector<double> Pattern::get_radial_profile(std::vector<double> angles, std:
         
     
     for( std::size_t iang=0; iang<angles.size(); iang++){
-            if(norm[iang]>0) profile[iang]/=norm[iang];
+            if(norm[iang]>2) profile[iang]/=norm[iang];
             else profile[iang]=-1;
         }
     
