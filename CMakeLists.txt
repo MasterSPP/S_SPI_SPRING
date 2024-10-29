@@ -107,12 +107,11 @@ if(WITH_CUDA)
     
     set(CMAKE_CUDA_SEPARABLE_COMPILATION ON)
     if(WITH_NVML)
-        set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} --use_fast_math --default-stream per-thread --device-link -DWITH_NVCC -DWITH_NVML") 
+        set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} --use_fast_math --default-stream per-thread --device-link -DWITH_NVCC -DWITH_NVML -arch=all") 
     else()
-        set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} --use_fast_math --default-stream per-thread --device-link -DWITH_NVCC") 
+        set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} --use_fast_math --default-stream per-thread --device-link -DWITH_NVCC -arch=all") 
     endif()
-
-
+    
   
     add_definitions(-DWITH_CUDA)
     add_library(gpu_context STATIC ${CMAKE_CURRENT_SOURCE_DIR}/src/gpu/gpu_context.cu)
@@ -138,6 +137,10 @@ if(WITH_CUDA)
     endif()
     
     target_link_libraries(spring_core PRIVATE gpu_utils)
+
+    #set_target_properties(gpu_context PROPERTIES CUDA_ARCHITECTURES "60;70;72")
+    #set_target_properties(solver PROPERTIES CUDA_ARCHITECTURES "35;50;72")
+    #set_target_properties(gpu_utils PROPERTIES CUDA_ARCHITECTURES "35;50;72")
 
     
 

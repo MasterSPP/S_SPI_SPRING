@@ -28,9 +28,11 @@ The source code is maintained by `Alessandro Colombo (ETH Zurich) <https://nux.e
 Citing
 ^^^^^^^
 
-In publications, please use our paper currently published as pre-print on `arXiv <https://arxiv.org/abs/2409.07413>`_:
+In publications, please cite the following papers:
 
-    - Colombo, A. et al, *An effective and reliable approach to the phase problem in single-shot single-particle Coherent Diffraction Imaging*, arXiv preprint (2024).  **DOI:** `10.48550/arXiv.2409.07413 <https://doi.org/10.48550/arXiv.2409.07413>`_
+    - Colombo, Alessandro, et al. *Facing the phase problem in coherent diffractive imaging via memetic algorithms*, Scientific reports 7.1 (2017): 42236. **DOI:** `10.1038/srep42236 <https://doi.org/10.1038/srep42236>`_ 
+
+    - Colombo, Alessandro, et al, *An effective and reliable approach to the phase problem in single-shot single-particle Coherent Diffraction Imaging*, arXiv preprint (2024).  **DOI:** `10.48550/arXiv.2409.07413 <https://doi.org/10.48550/arXiv.2409.07413>`_
 
 
 .. toctree::
