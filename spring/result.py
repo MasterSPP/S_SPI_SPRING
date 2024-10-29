@@ -3,6 +3,8 @@ import h5py
 import numpy as np
 from spring.settings_manager import Settings
 from spring.stats_manager import Stats
+
+from spring_core import pattern
 import matplotlib.pyplot as plt
 import matplotlib
 import PIL.Image
@@ -646,4 +648,37 @@ class Result:
             
         for aa in ax:
             aa.set_xlim([0, np.amin([iters[-1]+10, self.total])])
+            
+            
+            
+    def get_prtf(self):
+        
+        recpattern=np.abs(np.fft.fftshift(np.fft.fft2(np.conj(self.get_density(crop=False))))[:,:])
+        origpattern = np.copy(self.pattern)
+        origpattern[origpattern<0] = 0
+        origpattern = origpattern**0.5
+        ratio = -1.*np.ones(origpattern.shape)
+        ratio[origpattern>0] = recpattern[origpattern>0]/origpattern[origpattern>0]
+        ratio[ratio>1] = 1
+        
+        #dtheta = 2.
+        center = [self.pattern.shape[0]/2, self.pattern.shape[1]/2]
+        nangles = self.pattern.shape[0]//2 
+        anglemax = 1 
+        dtheta = anglemax / nangles
+        angles = np.arange(0, anglemax, dtheta)
+        radprof = np.array(pattern.get_radial_profile(ratio, dtheta, center, angles, [0,360]))
+        angles = angles[radprof>0]
+        radprof = radprof[radprof>0]
+        
+        
+        return angles, radprof
+        
+
+
+    
+    
+    
+    
+    
         

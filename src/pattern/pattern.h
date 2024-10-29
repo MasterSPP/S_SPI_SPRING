@@ -26,5 +26,5 @@ public:
     double dtheta;
     std::tuple<std::vector<double>,std::vector<double>> cut_downscale_and_correct(double R, double dx, std::array<std::size_t,2> cutdims, std::array<std::size_t,2> newdims, std::vector<double> mask);
     std::tuple<std::vector<double>,std::vector<double>> cut_and_downscale(std::array<std::size_t,2> cutdims, std::array<std::size_t,2> newdims, std::vector<double> mask);
-    
+    std::vector<double> get_radial_profile(std::vector<double> angles, std::array<double,2> phi_limits);
 };

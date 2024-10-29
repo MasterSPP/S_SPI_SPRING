@@ -427,7 +427,28 @@ PYBIND11_MODULE(spring_core, sp)
                             :param newsize: 2-element array with the new size
                             
                             :returns: the rescaled diffraction image
-                            )pbdoc", py::return_value_policy::move,  py::arg("data"), py::arg("mask"), py::arg("center"),  py::arg("cutsize"),  py::arg("newsize"));     
+                            )pbdoc", py::return_value_policy::move,  py::arg("data"), py::arg("mask"), py::arg("center"),  py::arg("cutsize"),  py::arg("newsize"));
+         
+         pm.def("get_radial_profile", [](py::array_t<double> data_in, double dtheta_in, std::array<double,2> center_in, std::vector<double> angles_in, std::array<double,2> phi_in){
+                        Pattern pattern((double*) (std::size_t) data_in.request().ptr , std::array<std::size_t,2>{(std::size_t) data_in.request().shape[1], (std::size_t) data_in.request().shape[0]}, center_in, dtheta_in );
+                        
+                        return pattern.get_radial_profile(angles_in, phi_in);
+
+                        }, R"pbdoc(
+                            Get the radial profile  for a given set of angles. 
+                            
+                            The function computes the radial profile at the given scattering angles in a given scattering direction :math:`\phi`. 
+                            
+                            
+                            :param data: 2d numpy array, containing the diffraction image
+                            :param dtheta: angular extension of a single pixel. Usually computed as the ratio between the maximum scattering angle and half the pixel width of the detector
+                            :param center: 2-elements array containing the x and y coordinate of the pattern center
+                            :param angles: array of scattering angles, that must be sorted by increasing values. 
+                            :param phi: scattering direction at which the radial profile is computed. The list of 2 values represents the minimum and maximum scattering direction at which the radial profile is computed.
+                            
+                            :returns: a list of values corresponding to the radial profile.
+                            )pbdoc",py::return_value_policy::move,  py::arg("data"), py::arg("dtheta"),py::arg("center"), py::arg("angles"), py::arg("phi"));
+         
 
 
 

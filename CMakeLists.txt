@@ -12,6 +12,7 @@ option(SINGLE_PRECISION "Use single precision" ON)
 option(WITH_OMP "Use OpenMP" ON)
 option(WITH_CUDA "Use CUDA" ON)
 option(WITH_NVML "Use NVML" ON)
+option(WITH_ARCH "Compile for all CUDA architectures" ON)
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # 
@@ -107,10 +108,17 @@ if(WITH_CUDA)
     
     set(CMAKE_CUDA_SEPARABLE_COMPILATION ON)
     if(WITH_NVML)
-        set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} --use_fast_math --default-stream per-thread --device-link -DWITH_NVCC -DWITH_NVML -arch=all") 
+        set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} --use_fast_math --default-stream per-thread --device-link -DWITH_NVCC -DWITH_NVML") 
     else()
-        set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} --use_fast_math --default-stream per-thread --device-link -DWITH_NVCC -arch=all") 
+        set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} --use_fast_math --default-stream per-thread --device-link -DWITH_NVCC") 
     endif()
+    
+
+    if(WITH_ARCH)
+        set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -arch=all") 
+    endif()
+        
+
     
   
     add_definitions(-DWITH_CUDA)

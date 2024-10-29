@@ -436,4 +436,81 @@ std::tuple<std::vector<double>,std::vector<double>> Pattern::cut_and_downscale(s
              
         
     }
+    
+    
+
+double Pattern::get_data(std::array<std::size_t,2> coords){
+    std::size_t index = coords[0] + coords[1] * this->dims[0];
+    if(index>=this->dims[1] * this->dims[0]) return -1;
+    else return this->data[index];        
+    
+}
+
+
+std::vector<double> Pattern::get_radial_profile(std::vector<double> angles, std::array<double,2> phi_limits){
+    
+    std::vector<double> profile(angles.size(), 0);
+    std::vector<double> norm(angles.size(), 0);
+    
+    
+    #pragma omp parallel for schedule(dynamic) collapse(2)
+    for(std::size_t y = 0; y<this->dims[1]; y++)
+        for(std::size_t x = 0; x<this->dims[0]; x++){
+            double xrel=(x-this->center[0]);
+            double yrel=(y-this->center[1]);
+            
+            
+            double angle=std::atan2(yrel, xrel)/M_PI*180.;
+            while(angle+360. <= phi_limits[1]){ angle+=360.;}
+            
+            if(angle<=phi_limits[1] && angle>=phi_limits[0]){
+                double radius = std::sqrt(xrel*xrel + yrel*yrel)*this->dtheta;
+                int rad_index=-1;
+//                 int ok=-1;
+                
+                for(int i=0; i<angles.size()-1; i++){
+                    if(angles[i]<=radius && angles[i+1]>radius){
+                        rad_index=i;
+//                         printf("%d \n", rad_index);
+                        break;                    
+                    }
+                }    
+                
+                
+                if(rad_index>=0){
+                    double val=this->get_data({x,y});
+                    if(val>=0){
+                        double factor=(angles[rad_index+1]-radius)/(angles[rad_index+1]-angles[rad_index]);
+        
+                        #pragma omp atomic
+                        profile[rad_index] += val*factor;
+                        
+                        #pragma omp atomic
+                        norm[rad_index] +=factor;
+                        
+                        #pragma omp atomic
+                        profile[rad_index+1] += val*(1.-factor);
+                        
+                        #pragma omp atomic
+                        norm[rad_index+1] +=(1.-factor);                    
+                    }
+                    
+                    
+                }
+
+            }
+            
+            
+        }
+        
+        
+    
+    for( std::size_t iang=0; iang<angles.size(); iang++){
+            if(norm[iang]>0) profile[iang]/=norm[iang];
+            else profile[iang]=-1;
+        }
+    
+    return profile;  
+    
+}
 

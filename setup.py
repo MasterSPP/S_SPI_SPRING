@@ -72,6 +72,11 @@ class CMakeBuild(build_ext):
             cmake_args += ['-DWITH_CUDA=Off']
         else:
             cmake_args += ['-DWITH_CUDA=On']
+        
+        if os.environ.get('WITH_ARCH')=="Off":
+            cmake_args += ['-DWITH_ARCH=Off']
+        else:
+            cmake_args += ['-DWITH_ARCH=On']
 
         if os.environ.get('WITH_NVML')=="On":
             cmake_args += ['-DWITH_NVML=On']
