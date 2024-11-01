@@ -652,6 +652,12 @@ class Result:
             
             
     def get_prtf(self):
+        """
+        Calculate the Phase Retrieval Transfer Function on the current reconstructed density. 
+        
+        :returns: a tuple of two arrays. The first is the array of q values, normalized between 0 and 1. To get the actual corresponding q values, one should multiply this array by q_max. The second array contains the PRTF values.
+        
+        """
         
         recpattern=np.abs(np.fft.fftshift(np.fft.fft2(np.conj(self.get_density(crop=False))))[:,:])
         origpattern = np.copy(self.pattern)
@@ -676,9 +682,31 @@ class Result:
         
 
 
-    
-    
-    
-    
-    
+    def plot_prtf(self, ax=None)
+        """
+        Plot the Phase Retrieval Transfer Function, calculated on the reconstructed density.
+        
+        :param ax: `matplotlib.axes.Axes` object on which the PRTF is plotted. If `None`, a new figure and new axes are created and the data is plotted.
+        """
+        axesgiven=True
+        if ax is None:
+            fig, ax = plt.subplots(1,1)
+            axesgiven=False
+        
+        angles, values = self.get_prtf()
+        ax.clear()
+        ax.plot([0,1],[0,0], ":", alpha=0, c='w')
+        ax.plot([0,1],[1,1], ":", alpha=0, c='w')
+        ax.plot(angles, vals)
+        ax.plot([0,1],[np.exp(-1), np.exp(-1)], ":", c='black', alpha=0.3)
+        ax.set_ylabel("PRTF")
+        ax.set_xlabel(r"$q_{max}$")
+        ax.spines.top.set_visible(False)
+        ax.spines.right.set_visible(False)
+        ax.spines.bottom.set_position(('outward', 4))
+        ax.spines.left.set_position(('outward', 4))
+        
+        if not axesgiven:
+            plt.show()
+            
         
