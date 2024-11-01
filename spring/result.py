@@ -697,7 +697,7 @@ class Result:
         ax.clear()
         ax.plot([0,1],[0,0], ":", alpha=0, c='w')
         ax.plot([0,1],[1,1], ":", alpha=0, c='w')
-        ax.plot(angles, vals)
+        ax.plot(angles, values)
         ax.plot([0,1],[np.exp(-1), np.exp(-1)], ":", c='black', alpha=0.3)
         ax.set_ylabel("PRTF")
         ax.set_xlabel(r"$q_{max}$")
