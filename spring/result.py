@@ -682,7 +682,7 @@ class Result:
         
 
 
-    def plot_prtf(self, ax=None)
+    def plot_prtf(self, ax=None):
         """
         Plot the Phase Retrieval Transfer Function, calculated on the reconstructed density.
         
