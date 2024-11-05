@@ -140,7 +140,28 @@ class AlgManager:
     
     
 
-    
+    def get_sequence_ipr(self, gen_it, area = None, update_support=True):
+        
+        stab_seq = self.get_stabilization_sequence(gen_it)
+        main_seq = self.get_main_sequence(gen_it)
+        eval_seq = self.get_evaluation_sequence(gen_it)
+        full_seq = stab_seq + main_seq
+
+        if update_support:
+            sw_seq = self.get_support_sequence(gen_it)
+        else:
+            sw_seq = []
+            
+        alg_sequence = []
+        
+
+        for irep in range(self.repetitions):
+            alg_sequence += full_seq + sw_seq
+        
+        
+        alg_sequence += eval_seq
+       
+        return alg_sequence
         
         
         

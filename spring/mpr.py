@@ -351,8 +351,6 @@ class MPR:
                 
                 if (save_every>0 and self.generation%save_every==0) or self.generation==self.settings['global']['generations']: 
                     self.result.save(self.settings['global']['workdir'], self.tag)   
-
-                #if self.verbose: print("Timing (s) --> Print: {:.2f}s , CrossPrep: {:.2f}s , Cross: {:.2f}s , SuppPix: {:.2f}s , IPR: {:.2f}s , Repl: {:.2f}s , total: {:.2f}s ({:.2f}s)".format(tprint, tcrossprep, tcross, tsuppix, tipr, trepl, ttot, (tprint+tcrossprep+tcross+tsuppix+tipr+trepl)))
                 
                 if self.checkstop():
                     raise StopRec             
@@ -435,6 +433,116 @@ class MPR:
         
 
 #############################################d
+
+
+
+def runIPR(self, save_every: int =-1):
+        try:
+            
+            self.stats = Stats()
+            self.SelectGPUs()
+
+            ##############################d
+            self.print("### Running conventional IPR.")
+                        
+            self.print("Initializing solver... ", end='', flush=True)
+            self.InitSolver()
+            self.print("Done.")
+            
+            self.print("Initializing algorithms... ", end='', flush=True)
+            self.InitIA()
+            self.print("Done.")
+            
+            self.print("Initializing population... ", end='', flush=True)
+            self.InitPop()              
+            self.print("Done.")
+            
+
+            
+            ##############################d
+            self.print("... Running main loop ...")
+
+            self.solver.Evaluate(self.reconstructions)
+            self.sortedargs = np.argsort([rec.get_error() for rec in self.reconstructions])
+            self.solver.set_sequence(self.algman.get_sequence_ipr(0, update_support = not self.refine))
+            self.reconstructions = self.solver.Sequence(self.reconstructions)  
+
+
+            self.generation = 0
+            self.replcount=0
+            
+            
+            self.sort()
+            self.get_best()
+            self.get_average()
+            self.save_result()
+            
+            while self.generation<self.settings['global']['generations']:
+
+                ttot = time.time()
+            
+                self.generation+=1
+                
+                ##########################
+                
+                if not self.refine:
+                    swparams = self.algman.get_support_params(self.generation)
+                    if self.verbose: print("Algorithms sequence: ", *swparams, sep="\n\t")
+
+                    self.reconstructions= self.solver.SW(self.reconstructions, *swparams)
+                
+                self.sort()
+                self.get_best()
+                self.get_average()
+                
+
+ 
+                ###### IPR ##########
+                tipr=time.time()
+                algsequence = self.algman.get_sequence_ipr(self.generation, update_support = not self.refine)
+
+                if self.verbose: print("Algorithms sequence: ", *algsequence, sep="\n\t")
+
+                                self.solver.set_sequence(algsequence)
+                self.reconstructions = self.solver.Sequence(self.reconstructions)   
+                
+                tipr=time.time()-tipr
+
+                #############################d
+
+                self.replcount=0   
+                self.save_result()
+                
+                
+                if (save_every>0 and self.generation%save_every==0) or self.generation==self.settings['global']['generations']: 
+                    self.result.save(self.settings['global']['workdir'], self.tag)   
+                
+                if self.checkstop():
+                    raise StopRec             
+            
+            self.print("Reconstruction completed")
+            self.setdone()
+            return self.result
+        
+        except StopRec:
+            self.print("Reconstruction interrupted.")
+            self.print("Saving reconstruction... ", end='')
+            self.result.save(self.settings['global']['workdir'], self.tag)   
+            self.print('Done')                
+            self.print("Empyting the communication queue... ", end='')
+            try:
+                while 1:
+                    self.queue.get(timeout=0.5)
+            except queue.Empty:
+                pass
+            
+            self.print('Done')                
+            self.setdone()
+            return self.result
+        except KeyboardInterrupt:
+            pass
+
+
 #############################################d
 #############################################d
 
