@@ -51,7 +51,7 @@ class Result:
     """
     def __init__(self, pid: list = None, workdir: str ='./', tag: str=''):
         
-        #if pid is None:
+        
             
         self.pattern = None
         self.density_best=None
@@ -67,7 +67,8 @@ class Result:
         self.proc_id = os.getpid()
         self.step=None
         self.total=None
-        else:
+        
+        if pid is not None:
             self.load(pid, workdir, tag)
         
         self.x_min, self.y_min = None, None
