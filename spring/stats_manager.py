@@ -39,13 +39,14 @@ class Stats:
                            'average':   'Avg \t'
                            }
         
-    def add(self, reconstructions, bestrec, avgrec, replcount, generation, tstamp):
+    def add(self, reconstructions, bestrec, avgrec, replcount, generation, tstamp, save_OS=False):
         
         errors = [rec.get_error() for rec in reconstructions]
         compelxities = [rec.get_reality() for rec in reconstructions]
         symmetries = [rec.get_symmetry() for rec in reconstructions]
         module_sums = [rec.get_module_sum() for rec in reconstructions] 
         complex_sums = [rec.get_complex_sum() for rec in reconstructions] 
+        
         
         bestind = np.argmin(errors)
         
@@ -67,17 +68,25 @@ class Stats:
         self.stats['mean']['module_sum'].append(np.mean(module_sums))
         self.stats['mean']['complex_sum'].append(np.mean(complex_sums))
         
+        bestsupport = bestrec.get_support()
+        matrixsize = bestsupport.shape[0]*bestsupport.shape[1]
+        self.stats['global']['OS'].append(matrixsize/np.sum(bestsupport))
+        self.stats['global']['generation'].append(generation)
+        self.stats['global']['replacement'].append(replcount/len(reconstructions))
+        self.stats['global']['tstamp'].append(tstamp)
+        
         self.stats['all']['error'].append(errors)
         self.stats['all']['complexity'].append(compelxities)
         self.stats['all']['symmetry'].append(symmetries)
         self.stats['all']['module_sum'].append(module_sums)
         self.stats['all']['complex_sum'].append(complex_sums)
         
-        bestsupport = bestrec.get_support()
-        self.stats['global']['OS'].append(bestsupport.shape[0]*bestsupport.shape[1]/np.sum(bestsupport))
-        self.stats['global']['generation'].append(generation)
-        self.stats['global']['replacement'].append(replcount/len(reconstructions))
-        self.stats['global']['tstamp'].append(tstamp)
+        
+        if save_OS:
+            OS_vals = [matrixsize/np.sum(rec.get_support())  for rec in reconstructions]
+            self.stats['all']['OS'].append(OS_vals)
+            
+        
 
     def get(self):
         return self.stats

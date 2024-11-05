@@ -46,9 +46,7 @@ class MPR:
         self.metadata=pattern.metadata
         self.gpulist = []
 
-        #self.setIA()
-        
-        
+               
         self.reconstructions = None
         self.refine = False
         
@@ -377,9 +375,9 @@ class MPR:
         except KeyboardInterrupt:
             pass
     
-    def save_result(self):
+    def save_result(self, save_OS=False):
         
-            self.stats.add(self.reconstructions, self.bestrec, self.avgrec, self.replcount, self.generation, tstamp=time.time())
+            self.stats.add(self.reconstructions, self.bestrec, self.avgrec, self.replcount, self.generation, tstamp=time.time(), save_OS=save_OS)
             #self.stats.print(self.settings['global']['generations'])
             
             res = Result()
@@ -475,7 +473,7 @@ class MPR:
             self.sort()
             self.get_best()
             self.get_average()
-            self.save_result()
+            self.save_result(save_OS=True)
             
             while self.generation<self.settings['global']['generations']:
 
@@ -511,7 +509,7 @@ class MPR:
                 #############################d
 
                 self.replcount=0   
-                self.save_result()
+                self.save_result(save_OS=True)
                 
                 
                 if (save_every>0 and self.generation%save_every==0) or self.generation==self.settings['global']['generations']: 
