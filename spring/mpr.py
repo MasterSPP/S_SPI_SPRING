@@ -375,11 +375,17 @@ class MPR:
         except KeyboardInterrupt:
             pass
     
-    def save_result(self):
+    def save_result(self, save_all=False):
         
             self.stats.add(self.reconstructions, self.bestrec, self.avgrec, self.replcount, self.generation, tstamp=time.time())
             #self.stats.print(self.settings['global']['generations'])
             
+            density_all=None
+            support_all = None
+            if save_all:
+                density_all = [rec.get_density() for rec in self.reconstructions]
+                support_all = [rec.get_support() for rec in self.reconstructions]
+                
             res = Result()
             res.set(self.pattern, 
                     self.bestrec.get_density(), self.bestrec.get_support(), 
@@ -434,7 +440,7 @@ class MPR:
 
 
 
-    def runIPR(self, save_every: int =-1):
+    def runIPR(self, save_every: int =-1, save_all=False):
         try:
             
             self.stats = Stats(save_OS=True)
@@ -513,6 +519,7 @@ class MPR:
                 
                 
                 if (save_every>0 and self.generation%save_every==0) or self.generation==self.settings['global']['generations']: 
+                    self.save_result(save_all=True)
                     self.result.save(self.settings['global']['workdir'], self.tag)   
                 
                 if self.checkstop():
