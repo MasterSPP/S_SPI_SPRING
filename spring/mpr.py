@@ -375,9 +375,9 @@ class MPR:
         except KeyboardInterrupt:
             pass
     
-    def save_result(self, save_OS=False):
+    def save_result(self):
         
-            self.stats.add(self.reconstructions, self.bestrec, self.avgrec, self.replcount, self.generation, tstamp=time.time(), save_OS=save_OS)
+            self.stats.add(self.reconstructions, self.bestrec, self.avgrec, self.replcount, self.generation, tstamp=time.time())
             #self.stats.print(self.settings['global']['generations'])
             
             res = Result()
@@ -437,7 +437,7 @@ class MPR:
     def runIPR(self, save_every: int =-1):
         try:
             
-            self.stats = Stats()
+            self.stats = Stats(save_OS=True)
             self.SelectGPUs()
 
             ##############################d
@@ -473,7 +473,7 @@ class MPR:
             self.sort()
             self.get_best()
             self.get_average()
-            self.save_result(save_OS=True)
+            self.save_result()
             
             while self.generation<self.settings['global']['generations']:
 
@@ -509,7 +509,7 @@ class MPR:
                 #############################d
 
                 self.replcount=0   
-                self.save_result(save_OS=True)
+                self.save_result()
                 
                 
                 if (save_every>0 and self.generation%save_every==0) or self.generation==self.settings['global']['generations']: 

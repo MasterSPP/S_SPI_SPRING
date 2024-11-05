@@ -2,10 +2,10 @@ import numpy as np
 
 
 class Stats:
-    def __init__(self):
+    def __init__(self, save_OS=False):
         
         self.scr = None
-        
+        self.save_OS = save_OS
         self.entries = [
             'error',
             'complexity',
@@ -26,7 +26,10 @@ class Stats:
                 'tstamp': [],
                 }
             }
-        
+            
+        if self.save_OS:
+            self.stats['all']['OS']=[]
+                    
         
         self.printinfo = {'error': 'Err.',
                           'complexity': 'Compl.',
@@ -39,7 +42,7 @@ class Stats:
                            'average':   'Avg \t'
                            }
         
-    def add(self, reconstructions, bestrec, avgrec, replcount, generation, tstamp, save_OS=False):
+    def add(self, reconstructions, bestrec, avgrec, replcount, generation, tstamp):
         
         errors = [rec.get_error() for rec in reconstructions]
         compelxities = [rec.get_reality() for rec in reconstructions]
@@ -70,10 +73,13 @@ class Stats:
         
         bestsupport = bestrec.get_support()
         matrixsize = bestsupport.shape[0]*bestsupport.shape[1]
+        
+        
+        self.stats['global']['OS'].append(matrixsize/np.sum(bestsupport))
         self.stats['global']['generation'].append(generation)
         self.stats['global']['replacement'].append(replcount/len(reconstructions))
         self.stats['global']['tstamp'].append(tstamp)
-    
+        
         self.stats['all']['error'].append(errors)
         self.stats['all']['complexity'].append(compelxities)
         self.stats['all']['symmetry'].append(symmetries)
@@ -81,11 +87,10 @@ class Stats:
         self.stats['all']['complex_sum'].append(complex_sums)
         
         
-        if save_OS:
+        if self.save_OS:
             OS_vals = [matrixsize/np.sum(rec.get_support())  for rec in reconstructions]
-            self.stats['global']['OS'].append(OS_vals)
-        else:    
-            self.stats['global']['OS'].append(matrixsize/np.sum(bestsupport))
+            self.stats['all']['OS'].append(OS_vals)
+            
         
 
     def get(self):
