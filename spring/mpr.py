@@ -394,6 +394,8 @@ class MPR:
                     self.stats,
                     self.fullsettings,
                     self.metadata,
+                    density_all = density_all,
+                    support_all = support_all,
                     step = self.generation,
                     total = self.settings['global']['generations'])
                                         
