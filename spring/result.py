@@ -51,22 +51,22 @@ class Result:
     """
     def __init__(self, pid: list = None, workdir: str ='./', tag: str=''):
         
-        if pid is None:
+        #if pid is None:
             
-            self.pattern = None
-            self.density_best=None
-            self.support_best=None
-            self.density_avg=None
-            self.support_avg=None
-            self.pid = None
-            self.stats = None
-            self.settings = None
-            self.metadata = None
-            self.density_all = None
-            self.support_all = None
-            self.proc_id = os.getpid()
-            self.step=None
-            self.total=None
+        self.pattern = None
+        self.density_best=None
+        self.support_best=None
+        self.density_avg=None
+        self.support_avg=None
+        self.pid = None
+        self.stats = None
+        self.settings = None
+        self.metadata = None
+        self.density_all = None
+        self.support_all = None
+        self.proc_id = os.getpid()
+        self.step=None
+        self.total=None
         else:
             self.load(pid, workdir, tag)
         
