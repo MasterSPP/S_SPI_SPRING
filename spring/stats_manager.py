@@ -70,11 +70,10 @@ class Stats:
         
         bestsupport = bestrec.get_support()
         matrixsize = bestsupport.shape[0]*bestsupport.shape[1]
-        self.stats['global']['OS'].append(matrixsize/np.sum(bestsupport))
         self.stats['global']['generation'].append(generation)
         self.stats['global']['replacement'].append(replcount/len(reconstructions))
         self.stats['global']['tstamp'].append(tstamp)
-        
+    
         self.stats['all']['error'].append(errors)
         self.stats['all']['complexity'].append(compelxities)
         self.stats['all']['symmetry'].append(symmetries)
@@ -84,8 +83,9 @@ class Stats:
         
         if save_OS:
             OS_vals = [matrixsize/np.sum(rec.get_support())  for rec in reconstructions]
-            self.stats['all']['OS'].append(OS_vals)
-            
+            self.stats['global']['OS'].append(OS_vals)
+        else:    
+            self.stats['global']['OS'].append(matrixsize/np.sum(bestsupport))
         
 
     def get(self):
