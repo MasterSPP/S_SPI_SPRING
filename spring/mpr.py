@@ -503,7 +503,7 @@ def runIPR(self, save_every: int =-1):
 
                 if self.verbose: print("Algorithms sequence: ", *algsequence, sep="\n\t")
 
-                                self.solver.set_sequence(algsequence)
+                self.solver.set_sequence(algsequence)
                 self.reconstructions = self.solver.Sequence(self.reconstructions)   
                 
                 tipr=time.time()-tipr
