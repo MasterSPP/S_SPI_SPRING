@@ -436,7 +436,7 @@ class MPR:
 
 
 
-def runIPR(self, save_every: int =-1):
+    def runIPR(self, save_every: int =-1):
         try:
             
             self.stats = Stats()
