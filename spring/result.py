@@ -293,9 +293,9 @@ class Result:
             if index>=0 and index<self.density_all.shape[0]:
                 dens = self.density_all[index]              
                 if crop:
-                    return self.crop(self.density_avg)
+                    return self.crop(self.density_all[index])
                 else:
-                    return np.copy(self.density_avg)
+                    return np.copy(self.density_all[index])
         return None
 
     def get_density(self, crop : bool = True):
