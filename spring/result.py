@@ -286,7 +286,18 @@ class Result:
             self.get_crop()
         return np.pad(data[self.x_min : self.x_max + 1, self.y_min : self.y_max + 1], self.margins)
             
-            
+
+    def get_density_pop(self, index, crop : bool = True):
+
+        if self.density_all is not None:
+            if index>=0 and index<self.density_all.shape[0]:
+                dens = self.density_all[index]              
+                if crop:
+                    return self.crop(self.density_avg)
+                else:
+                    return np.copy(self.density_avg)
+        return None
+
     def get_density(self, crop : bool = True):
         """
         Get the reconstructed average density as numpy array.
@@ -474,8 +485,8 @@ class Result:
                 
                 ax.plot([xstart, xend], [ystart, yend], "-", color=textcolor, linewidth=4)
                 ax.text(textx,texty, str(int(tottensize)) + "nm", color=textcolor, ha="center", va = "bottom", fontsize=14)
-            
-        
+    
+
 
     def plot_phase(self, ax):
         """
