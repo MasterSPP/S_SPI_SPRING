@@ -168,7 +168,8 @@ class Settings:
             'crossexp' : 1,
             'crossft' : 1,
             'scaling_min': 0.5,
-            'scaling_max': 1.5
+            'scaling_max': 1.5,
+            'seed' : 42
             }
         
         if fname is not None:

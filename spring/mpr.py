@@ -172,7 +172,8 @@ class MPR:
                                     realpen = 0, 
                                     use_bounds = self.settings['global']['bounds'], 
                                     gpus=self.gpulist,
-                                    nthreads = self.settings['global']['threads']*len(self.gpulist))
+                                    nthreads = self.settings['global']['threads']*len(self.gpulist),
+                                    seed = self.settings_adv['seed'])
         
         self.solver.set_shift_param(shiftmin=self.settings_adv['shift_min'], shiftmax=self.settings_adv['shift_max'])
         
