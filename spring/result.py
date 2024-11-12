@@ -723,7 +723,7 @@ class Result:
             
     
     
-    def reshift(self, density, crop=True)
+    def reshift(self, density, crop=True):
     
         dens1 = self.get_density(crop=False)
         dens2 = np.copy(density)
