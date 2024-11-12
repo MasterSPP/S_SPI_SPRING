@@ -721,4 +721,50 @@ class Result:
         if not axesgiven:
             plt.show()
             
+    
+    
+    def reshift(self, density, crop=True)
+    
+        dens1 = self.get_density(crop=False)
+        dens2 = np.copy(density)
+
+        dens1fft = np.fft.fft2(dens1)
+        dens2fft = np.fft.fft2(dens2)
+        dens2fft_inv = np.fft.fft2(np.conj(dens2[::-1,::-1]))
+
+        crosscorr = np.fft.ifft2(np.conj(dens1fft)*dens2fft)
+        crosscorr_inv = np.fft.ifft2(np.conj(dens1fft)*dens2fft_inv)
+
+        corrabs = np.abs(crosscorr)
+        corrabs_inv = np.abs(crosscorr_inv)
+        
+        maxval = np.amax(corrabs)
+        maxval_con = np.amax(corrabs_inv)
+
+        if maxval > maxval_con:
+            coords = np.unravel_index(corrabs.argmax(), corrabs.shape)
+            phase = np.angle(crosscorr[coords])
+            print("Non inverted", coords)
+            newdensft = np.copy(dens2fft)
+
+        else:
+            coords = np.unravel_index(corrabs_inv.argmax(), corrabs_inv.shape)
+            phase = np.angle(crosscorr_inv[coords])
+            print("Inverted",coords)
+            newdensft = np.copy(dens2fft_inv)
+
+        shift = [-coords[0], -coords[1]]
+            
+        x = np.arange(0, dens1.shape[0])
+        y = np.arange(0, dens1.shape[1])
+        xv, yv = np.meshgrid(x, y)
+
+        newdensft = newdensft * np.exp(-1j*2.*np.pi*yv*shift[0]/dens1.shape[0] - 1j*2.*np.pi*xv*shift[1]/dens1.shape[1])
+        newdens = np.fft.ifft2(newdensft)*np.exp(-1j*phase)
+
+        if crop:
+            return self.crop(newdens)
+        else:
+            return newdens
+    
         
