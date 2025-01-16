@@ -232,7 +232,7 @@ class Result:
             
             if "metadata" in h5file.keys():
                 for k in h5file["metadata"].keys():
-                    metadata[k]  =h5file["metadata"][k][()]
+                    self.metadata[k]  =h5file["metadata"][k][()]
                 #print(k, metadata[k])
             
             statsdict = {}
