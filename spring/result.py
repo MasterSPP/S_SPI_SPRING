@@ -68,12 +68,14 @@ class Result:
         self.step=None
         self.total=None
         
+                
         if pid is not None:
             self.load(pid, workdir, tag)
         
         self.x_min, self.y_min = None, None
         self.x_max, self.y_max = None, None
         
+        self.margsize = 0.05
   
      
     def set(self, pattern, density_best, support_best, density_avg, support_avg, pid, stats, settings, metadata={}, density_all=None, support_all = None, step=None, total=None ):
@@ -279,7 +281,7 @@ class Result:
             centeral = (self.y_max+self.y_min)//2
             self.y_min = centeral - (self.x_max-self.x_min)//2
             self.y_max = centeral + (self.x_max-self.x_min)//2
-        self.margins = int( (self.x_max-self.x_min)*0.1)
+        self.margins = int( (self.x_max-self.x_min)*self.margsize)
         
     def crop(self, data):
         if self.x_min is None:
