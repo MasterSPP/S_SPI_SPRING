@@ -214,7 +214,19 @@ class Settings:
                 
     def get_advanced(self):
         return self.advanced
+    
+    def set_advanced(self, name: str , value):
+        """
+        Set the value of a parameter with name ``name`` belonging to the section ``section``.
         
+        :param section: Section to which the parameter belongs.
+        :param name: Name of the parameter
+        :param value: Value to assign to the parameter      
+        """
+        self.advanced[name]=value
+            
+        return self
+    
     def set(self, section : str , name: str , value):
         """
         Set the value of a parameter with name ``name`` belonging to the section ``section``.
