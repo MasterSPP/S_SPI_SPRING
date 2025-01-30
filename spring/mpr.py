@@ -240,7 +240,7 @@ class MPR:
             self.solver.Evaluate(self.reconstructions)
             self.sortedargs = np.argsort([rec.get_error() for rec in self.reconstructions])
             bestrec = self.reconstructions[self.sortedargs[0]]
-            self.solver.set_sequence(self.algman.get_sequence(0, area = [np.sum(bestrec.get_support()), np.sum(bestrec.get_support())], update_support = not self.refine),update_support_first = self.settings_adv["sw_first"])
+            self.solver.set_sequence(self.algman.get_sequence(0, area = [np.sum(bestrec.get_support()), np.sum(bestrec.get_support())], update_support = not self.refine,update_support_first = self.settings_adv["sw_first"]))
             self.reconstructions = self.solver.Sequence(self.reconstructions)  
             #self.sortedargs = np.argsort([rec.get_error() for rec in self.reconstructions])
             #self.reconstructions = [self.reconstructions[i] for i in self.sortedargs]
