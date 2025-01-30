@@ -164,6 +164,7 @@ class Settings:
             'shift_min': 0,   
             'shift_max': 2,
             'avg_frac': 0.8,
+            'avg_supp': 1.,
             'crosssym' : False,
             'crossexp' : 1,
             'crossft' : 1,

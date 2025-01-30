@@ -282,6 +282,10 @@ class MPR:
                 if not self.refine:
                     suppixbest = np.sum(self.bestrec.get_support())
                     suppixeval = np.sum(self.avgrec.get_support())
+                    if suppixeval>suppixbest:
+                        suppixeval = suppixbest + int(self.settings_adv['avg_supp']*(suppixeval-suppixbest))
+                    
+                    
                     suppix=[suppixbest,suppixeval]
                             
                     
