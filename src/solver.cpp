@@ -902,29 +902,33 @@ std::vector<std::shared_ptr<Reconstruction>>  Solver::Crossover(std::vector<std:
             centery[i] = cy;
             phases[i]  = contexts[icontext]->rand(-phase_in*M_PI, phase_in*M_PI);
         }
-        
-        
+
         
         
         for(int iy=0; iy<support_size; iy++)
             for(int ix=0; ix<support_size; ix++){
                 
-                int index = (iy+dims[1]/2-support_size/2)*dims[0]  + (ix+dims[0]/2-support_size/2);
-                locsupport[index]=1;
-                for(int i=0; i<nitems; i++){
-                    FLOAT rad =  std::sqrt((ix - centerx[i])*(ix - centerx[i]) + (iy - centery[i])*(iy - centery[i]));
-                    FLOAT val=0;
-                    if(rad<sigmas[i]){
-                        val = 2.* sigmas[i]* std::sin(std::acos(rad/sigmas[i]));
+                
+                FLOAT supprad = std::sqrt((ix-support_size/2.)*(ix-support_size/2.) + (iy-support_size/2.)*(iy-support_size/2.));
+                if(supprad<=support_size/2.){
+                    
+                    int index = (iy+dims[1]/2-support_size/2)*dims[0]  + (ix+dims[0]/2-support_size/2);
+                    locsupport[index]=1;
+                    for(int i=0; i<nitems; i++){
+                        FLOAT rad =  std::sqrt((ix - centerx[i])*(ix - centerx[i]) + (iy - centery[i])*(iy - centery[i]));
+                        FLOAT val=0;
+                        if(rad<sigmas[i]){
+                            val = 2.* sigmas[i]* std::sin(std::acos(rad/sigmas[i]));
 
-                        locdensity[index]+=std::polar(val,phases[i]);
+                            locdensity[index]+=std::polar(val,phases[i]);
+                        }
+                    }              
+                
+                    FLOAT mod=std::abs(locdensity[index]);
+                    if(mod>0){
+                        locdensity[index] = locdensity[index]/mod*std::pow(mod,exponent);
+                                            
                     }
-                }              
-             
-                FLOAT mod=std::abs(locdensity[index]);
-                if(mod>0){
-                    locdensity[index] = locdensity[index]/mod*std::pow(mod,exponent);
-                                        
                 }
             }
             
