@@ -102,7 +102,7 @@ class AlgManager:
         return alg_sequence
 
     
-    def get_sequence(self, gen_it, area = None, update_support=True):
+    def get_sequence(self, gen_it, area = None, update_support=True, update_support_first = False):
         
         stab_seq = self.get_stabilization_sequence(gen_it)
         main_seq = self.get_main_sequence(gen_it)
@@ -126,6 +126,10 @@ class AlgManager:
                 #alg_sequence += sw_seq
         
         #alg_sequence += swa_seq + full_seq + swa_seq_eval + eval_seq
+
+        if update_support_first:
+            alg_sequence += sw_seq
+            
 
         for irep in range(self.repetitions-2):
             alg_sequence += full_seq + sw_seq
