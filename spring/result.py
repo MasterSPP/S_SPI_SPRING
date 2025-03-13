@@ -561,7 +561,7 @@ class Result:
         #return plt.subplots(nrows = nrows,ncols = ncols, figsize=(ncols*pltsize,nrows*pltsize))
         
     
-    def fillaxes(self, ax, cmap: str = 'bone', cmap_pattern: str ='inferno'):
+    def fillaxes(self, ax, cmap: str = 'bone', cmap_pattern: str ='inferno', energy=None, angle=None):
         
         restitle = "Gen {:d}/{:d}".format(int(self.step), int(self.total), int(self.proc_id))
         titlestring=''
@@ -571,7 +571,7 @@ class Result:
                 titlestring+= " - {:d}".format(self.pid[i])
        
         self.plot_pattern(ax[0], cmap_pattern)
-        self.plot_density(ax[1], cmap)
+        self.plot_density(ax[1], cmap, energy=energy, angle=angle)
         self.plot_phase(ax[2])
         
         
@@ -591,7 +591,7 @@ class Result:
         #self.fillaxes(ax, cmap, cmap_pattern)
         #plt.show()
 
-    def plot(self, stats: bool = False, cmap: str = 'bone', cmap_pattern: str ='inferno'):
+    def plot(self, stats: bool = False, cmap: str = 'bone', cmap_pattern: str ='inferno', energy=None, angle=None):
         """
         Plot an overview of the reconstruction in a Matplotlib figure.
 
@@ -601,7 +601,7 @@ class Result:
         """
 
         fig, ax, axstats = self.getaxes(stats)
-        self.fillaxes(ax, cmap, cmap_pattern)
+        self.fillaxes(ax, cmap, cmap_pattern, energy, angle)
         if stats:
             self.fillstatsaxes(axstats)
         
