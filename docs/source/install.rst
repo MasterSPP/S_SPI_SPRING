@@ -119,7 +119,7 @@ If you want to create a new environment:
 .. code-block:: console
 
     $ module load conda/3.9
-    $ conda create env_name
+    $ conda create -n env_name
     
 Navigate to the root of the spring repository and install with the usual ``pip`` command:
 

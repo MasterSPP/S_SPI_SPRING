@@ -164,7 +164,7 @@ The ``hv.livelog()`` will still show the same output about the running reconstru
   RUNNING 197-10-14558540587 [###-------] 26% (1 queued)
   
 The queued job will be executed as soon as the currently running one is completed. 
-There is no restrinction on the number of reconstructions that can be submitted, i.e. the length of the *execution queue* (apart from the total installed memory in the system).
+There is no restriction on the number of reconstructions that can be submitted, i.e. the length of the *execution queue* (apart from the total installed memory in the system).
 
 
 For example, the execution of 

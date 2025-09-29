@@ -59,7 +59,7 @@ This option has to be enabled at installation time (see also :doc:`install`) by 
 
 .. code:: console
 
-    $ WITH_NVCC=On python3 -m pip install .
+    $ WITH_NVML=On python3 -m pip install .
     
     
 In this way, when the reconstruction is launched via the :meth:`spring.MPR.run` or :meth:`spring.MPR.runasync`, the current load on the available GPUs is inspected and those with less computing load are selected.
