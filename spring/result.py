@@ -495,7 +495,7 @@ class Result:
     
 
 
-    def plot_phase(self, ax):
+    def plot_phase(self, ax, indens = None):
         """
         Plot the retrieved density phase on the given input axes (instance of `matplotlib.axes.Axes`).
         
@@ -503,7 +503,7 @@ class Result:
         """
         ax.clear()
         ax.axis("off")
-        densplot= self.get_density()
+        densplot= self.get_density(indens)
         ax.imshow(colorize(densplot))
         
     def plot_support(self, ax, cmap='viridis'):
