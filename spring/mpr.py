@@ -380,7 +380,7 @@ class MPR:
         except KeyboardInterrupt:
             pass
     
-    def save_result(self, save_all=False):
+    def save_result(self, save_all=True):
         
             self.stats.add(self.reconstructions, self.bestrec, self.avgrec, self.replcount, self.generation, tstamp=time.time())
             #self.stats.print(self.settings['global']['generations'])
