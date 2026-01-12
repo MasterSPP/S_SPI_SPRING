@@ -300,7 +300,7 @@ class Result:
                     return np.copy(self.density_all[index])
         return None
 
-    def get_density(self, crop : bool = True):
+    def get_density(self, crop : bool = True, indens = None):
         """
         Get the reconstructed average density as numpy array.
         
@@ -308,10 +308,14 @@ class Result:
         
         :returns: 2-D complex numpy array
         """
-        if crop:
-            return self.crop(self.density_avg)
+        if indens is not None:
+            outdens = indens
         else:
-            return np.copy(self.density_avg)
+            outdens = self.density_avg
+        if crop:
+            return self.crop(outdens)
+        else:
+            return np.copy(outdens)
     
     def get_support(self, crop : bool =True):
         """
@@ -447,7 +451,7 @@ class Result:
         #patternplot[patternplot<vmin]=vmin
         ax.imshow(recpattern, norm=matplotlib.colors.LogNorm(vmin=vmin), cmap=cmap)
         
-    def plot_density(self, ax, cmap='bone', energy=None, angle=None):
+    def plot_density(self, ax, cmap='bone', energy=None, angle=None, indens=None):
         """
         Plot the retrieved density module on the given input axes (instance of `matplotlib.axes.Axes`).
         
@@ -458,7 +462,7 @@ class Result:
         """
         ax.clear()
         ax.axis("off")
-        densplot= self.get_density()
+        densplot= self.get_density(indens)
         ax.imshow(np.abs(densplot), cmap=cmap)
         
         if energy is not None:
