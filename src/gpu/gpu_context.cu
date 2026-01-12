@@ -1309,14 +1309,14 @@ __global__ void multiply(CUDA_COMPLEX* crosscorr, CUDA_COMPLEX* density,CUDA_COM
         if(maxval1>=maxval2){
             shiftx = maxindex1%npixels;
             shifty = maxindex1/npixels;
-            shiftphase = - (density_ref_phase - density_phase);
+            shiftphase = density_ref_phase - density_phase;
             flip=false;            
         }
         
         else{
             shiftx = -maxindex2%npixels;
             shifty = -maxindex2/npixels;
-            shiftphase = - (density_ref_phase + density_phase);
+            shiftphase = density_ref_phase + density_phase;
             flip=true;            
             }
         cudaMemcpyAsync(density_dev, buffer_dev_complex,  npixels*npixels*sizeof(CUDA_COMPLEX), 
