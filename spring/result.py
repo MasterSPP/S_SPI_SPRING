@@ -462,7 +462,7 @@ class Result:
         """
         ax.clear()
         ax.axis("off")
-        densplot= self.get_density(indens)
+        densplot= self.get_density(indens=indens)
         ax.imshow(np.abs(densplot), cmap=cmap)
         
         if energy is not None:
