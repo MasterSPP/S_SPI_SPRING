@@ -376,11 +376,12 @@ class Result:
         """
         return self.pattern
     
-    def get_residuals(self):
+    def get_residuals(self, indens = None):
         """
         Get the residuals of the reconstruction, i.e. the difference between the experimental and reconstructed pattern.
         """
-        recpattern=np.abs(np.fft.fftshift(np.fft.fft2(np.conj(self.get_density(crop=False))))[:,:])**2
+
+        recpattern=np.abs(np.fft.fftshift(np.fft.fft2(np.conj(self.get_density(crop=False, indens=indens))))[:,:])**2
         return np.abs(self.pattern-recpattern)
 
     def get_rec_pattern(self):
@@ -391,7 +392,7 @@ class Result:
         return recpattern
 
         
-    def plot_residuals(self, ax, cmap='inferno'):
+    def plot_residuals(self, ax, cmap='inferno', indens=None):
         """
         Plot the residuals (difference between experimental and reconstructed pattern) on the given input axes (instance of `matplotlib.axes.Axes`).
         
@@ -401,7 +402,7 @@ class Result:
                 
         ax.clear()
         ax.axis("off")
-        residuals = self.get_residuals()
+        residuals = self.get_residuals(indens=indens)
         patternplot = np.copy(self.pattern)
         mask = patternplot<0
         patternplot[mask]=np.nan
