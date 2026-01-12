@@ -1345,7 +1345,7 @@ __global__ void shift(CUDA_COMPLEX* density, CUDA_COMPLEX* density_orig, SUPPORT
             FLOAT mod = std::sqrt(density_orig[oldindex].x*density_orig[oldindex].x+density_orig[oldindex].y*density_orig[oldindex].y);
             FLOAT phase = atan2(density_orig[oldindex].y,density_orig[oldindex].x);
 
-            phase+= shiftphase;
+            phase-= shiftphase;
             
             if(flip) phase=-phase;
 
