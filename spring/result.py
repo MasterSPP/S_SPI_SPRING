@@ -503,7 +503,7 @@ class Result:
         """
         ax.clear()
         ax.axis("off")
-        densplot= self.get_density(indens)
+        densplot= self.get_density(indens=indens)
         ax.imshow(colorize(densplot))
         
     def plot_support(self, ax, cmap='viridis'):
