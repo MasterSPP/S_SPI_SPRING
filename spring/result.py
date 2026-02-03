@@ -193,7 +193,7 @@ class Result:
         if len(tag)>0:
             outname+=tag+"_"
         if tag=="*":
-            outname+="step{:04d}_".format(self.generation)
+            outname+="step{:04d}_".format(self.step)
         outname += "rec.h5"
 
         return outname
