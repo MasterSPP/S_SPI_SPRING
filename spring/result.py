@@ -190,7 +190,7 @@ class Result:
         outname=''
         for pp in pid:
             outname+="{:d}_".format(pp)
-        if len(tag)>0:
+        if len(tag)>0 and tag!="*":
             outname+=tag+"_"
         if tag=="*":
             outname+="step{:04d}_".format(self.step)
