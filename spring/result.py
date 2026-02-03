@@ -192,8 +192,8 @@ class Result:
             outname+="{:d}_".format(pp)
         if len(tag)>0:
             outname+=tag+"_"
-        #if save_steps:
-            #filename+="step{:04d}_".format(self.generation)
+        if tag=="*":
+            outname+="step{:04d}_".format(self.generation)
         outname += "rec.h5"
 
         return outname
