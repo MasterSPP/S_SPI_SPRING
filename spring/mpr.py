@@ -253,6 +253,8 @@ class MPR:
             self.get_best()
             self.get_average()
             self.save_result()
+            if (save_every>0 and self.generation%save_every==0) or self.generation==self.settings['global']['generations']:
+                self.result.save(self.settings['global']['workdir'], self.tag)
             
             while self.generation<self.settings['global']['generations']:
 
