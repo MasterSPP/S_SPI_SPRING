@@ -282,7 +282,7 @@ class Result:
             self.y_min = centeral - (self.x_max-self.x_min)//2
             self.y_max = centeral + (self.x_max-self.x_min)//2
 
-        if self.margsize>=0:
+        if self.margsize>=0 or (self.x_max-self.x_min)>np.abs(self.margsize):
             self.margins = int( (self.x_max-self.x_min)*self.margsize)
         else:
             self.margins = int((np.abs(self.margsize)-(self.x_max-self.x_min))//2)
