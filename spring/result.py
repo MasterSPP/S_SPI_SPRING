@@ -281,7 +281,12 @@ class Result:
             centeral = (self.y_max+self.y_min)//2
             self.y_min = centeral - (self.x_max-self.x_min)//2
             self.y_max = centeral + (self.x_max-self.x_min)//2
-        self.margins = int( (self.x_max-self.x_min)*self.margsize)
+
+        if self.margsize>=0:
+            self.margins = int( (self.x_max-self.x_min)*self.margsize)
+        else:
+            self.margins = int((np.abs(self.margsize)-(self.x_max-self.x_min))//2)
+
         
     def crop(self, data):
         if self.x_min is None:
