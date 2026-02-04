@@ -67,6 +67,7 @@ class Result:
         self.proc_id = os.getpid()
         self.step=None
         self.total=None
+        self.fixsize = 0
         
                 
         if pid is not None:
@@ -273,21 +274,28 @@ class Result:
         coords = np.argwhere(self.support_best)
         self.x_min, self.y_min = coords.min(axis=0)
         self.x_max, self.y_max = coords.max(axis=0)
-        if self.x_max-self.x_min<self.y_max-self.y_min:
-            centeral = (self.x_max+self.x_min)//2
-            self.x_min = centeral - (self.y_max-self.y_min)//2
-            self.x_max = centeral + (self.y_max-self.y_min)//2
-        elif self.x_max-self.x_min>self.y_max-self.y_min:
-            centeral = (self.y_max+self.y_min)//2
-            self.y_min = centeral - (self.x_max-self.x_min)//2
-            self.y_max = centeral + (self.x_max-self.x_min)//2
+
+
+        if self.fixsize>0:
+            midx= (self.x_min+self.x_max)//2
+            midy =(self.y_min+self.y_max)//2
+            self.x_min = midx-self.fixsize//2
+            self.x_max = self.x_min+self.fixsize
+            self.y_min = midy-self.fixsize//2
+            self.y_max = self.y_min+self.fixsize
+        else:
+
+            if self.x_max-self.x_min<self.y_max-self.y_min:
+                centeral = (self.x_max+self.x_min)//2
+                self.x_min = centeral - (self.y_max-self.y_min)//2
+                self.x_max = centeral + (self.y_max-self.y_min)//2
+            elif self.x_max-self.x_min>self.y_max-self.y_min:
+                centeral = (self.y_max+self.y_min)//2
+                self.y_min = centeral - (self.x_max-self.x_min)//2
+                self.y_max = centeral + (self.x_max-self.x_min)//2
 
         if self.margsize>=0:
             self.margins = int( (self.x_max-self.x_min)*self.margsize)
-        else:
-            self.margins = int((np.abs(self.margsize)-(self.x_max-self.x_min))//2)
-            if self.margins<0:
-                self.margins = int( (self.x_max-self.x_min)*0.05)
 
         
     def crop(self, data):
